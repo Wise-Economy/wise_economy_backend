@@ -1,8 +1,8 @@
 from django.urls import path
+from app_backend.views import health
 
-from . import views
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('health', health.health, name='health'),
 ]
 

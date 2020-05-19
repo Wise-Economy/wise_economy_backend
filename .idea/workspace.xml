@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="577099c1-9583-4fe5-99de-44be50005944" name="Default Changelist" comment="" />
+    <list default="true" id="577099c1-9583-4fe5-99de-44be50005944" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app_backend/models/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app_backend/views/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app_backend/views/country_home_screen.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app_backend/views/global_home_screen.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app_backend/views/health.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app_backend/views/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app_backend/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/app_backend/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app_backend/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app_backend/models/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app_backend/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/app_backend/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app_backend/views.py" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1c7vkHFX4x1q33PQYtkFz1DakcM" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
     <option name="autoscrollToSource" value="true" />
@@ -20,8 +41,15 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app_backend/views" />
+      <recent name="$PROJECT_DIR$/app_backend/models" />
+    </key>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -37,6 +65,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state x="564" y="335" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1589898980410">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="564" y="335" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1680.1050@0.0.1680.1050" timestamp="1589898980410" />
     <state x="341" y="164" key="SettingsEditor" timestamp="1589892704183">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
