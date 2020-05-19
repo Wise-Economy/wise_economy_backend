@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="577099c1-9583-4fe5-99de-44be50005944" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app_backend/models/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app_backend/views/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app_backend/views/country_home_screen.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app_backend/views/global_home_screen.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app_backend/views/health.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app_backend/views/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app_backend/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/app_backend/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app_backend/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app_backend/models/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app_backend/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/app_backend/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app_backend/views.py" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
