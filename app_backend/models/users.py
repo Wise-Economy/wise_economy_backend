@@ -6,12 +6,12 @@ from app_backend.models.banking import Country, BankProvider
 
 
 class AppUser(User):
-    se_customer_id = models.IntegerField()
-    se_identifier = models.CharField(max_length=100)
-    se_customer_type = models.CharField(max_length=100)
+    se_customer_id = models.IntegerField(default=None, blank=True, null=True)
+    se_identifier = models.CharField(default=None, blank=True, null=True, max_length=100)
+    se_customer_type = models.CharField(default=None, blank=True, null=True, max_length=100)
     created_at = models.DateTimeField()
     last_updated = models.DateTimeField()
-    country_id = models.ForeignKey(Country, on_delete=models.CASCADE)
+    country_id = models.ForeignKey(Country, default=None, blank=True, null=True, on_delete=models.CASCADE)
 
 
 class UserConnection(models.Model):
