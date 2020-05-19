@@ -1,0 +1,78 @@
+curl -v -H "Accept: application/json" \
+        -H "Content-type: application/json" \
+        -H "App-id: $APP_ID" \
+        -H "Secret: $SECRET" \
+        -X POST \
+        -d "{ \
+              \"data\": { \
+                \"identifier\": \"testasd\" \
+              } \
+            }" \
+        https://www.saltedge.com/api/v5/customers
+
+{"data":{"id":"216705875501386009","identifier":"testasd","secret":"ZNqGjdQ9A2sIH8BpGiO15mz0rZV1YkLE16tnJEiUTnE"}}
+
+curl -v -H "Accept: application/json" \
+        -H "Content-type: application/json" \
+        -H "App-id: $APP_ID" \
+        -H "Secret: $SECRET" \
+        -H "Customer-secret: ZNqGjdQ9A2sIH8BpGiO15mz0rZV1YkLE16tnJEiUTnE" \
+        -X POST \
+        -d "{ \
+              \"data\": { \
+                \"consent\": { \
+                  \"from_date\": \"2020-01-01\", \
+                  \"period_days\": 90, \
+                  \"scopes\": [ \
+                    \"account_details\", \
+                    \"transactions_details\" \
+                  ] \
+                }, \
+                \"attempt\": { \
+                  \"from_date\": \"2020-04-01\", \
+                  \"fetch_scopes\": [ \
+                    \"accounts\", \
+                    \"transactions\" \
+                  ] \
+                } \
+              } \
+            }" \
+        https://www.saltedge.com/api/v5/connect_sessions/create
+{"data":{"expires_at":"2020-05-19T10:01:24Z","connect_url":"https://www.saltedge.com/connect?token=2090c55f4641f7a6c71369e0710a938d0a4d5d2597be0ab2f0484726bc7ab10b"}}
+Opening the url in the above response, takes to the our web app with extra payload.
+
+curl -v -H "Accept: application/json" \
+        -H "Content-type: application/json" \
+        -H "App-id: $APP_ID" \
+        -H "Secret: $SECRET" \
+        -H "Customer-secret: ZNqGjdQ9A2sIH8BpGiO15mz0rZV1YkLE16tnJEiUTnE" \
+        -X GET \
+        https://www.saltedge.com/api/v5/connections?customer_id=216705875501386009
+This gives me the connections data.
+
+curl -v -H "Accept: application/json" \
+        -H "Content-type: application/json" \
+        -H "App-id: $APP_ID" \
+        -H "Secret: $SECRET" \
+        -X GET \
+        -H "Customer-secret: ZNqGjdQ9A2sIH8BpGiO15mz0rZV1YkLE16tnJEiUTnE" \
+        https://www.saltedge.com/api/v5/accounts?connection_id=220983528995686626
+This gives me the existing accounts from each bank connection.
+
+curl -v -H "Accept: application/json" \
+        -H "Content-type: application/json" \
+        -H "App-id: $APP_ID" \
+        -H "Secret: $SECRET" \
+        -X GET \
+        https://www.saltedge.com/api/v5/transactions?connection_id=220983528995686626&account_id=220984266371107189
+This gives me the transactions for each account in a connection.
+
+curl -v -H "Accept: application/json" \
+        -H "Content-type: application/json" \
+        -H "App-id: $APP_ID" \
+        -H "Secret: $SECRET" \
+        -X GET \
+        https://www.saltedge.com/api/v5/holder_info?connection_id=220983528995686626
+This gives me the holder personal info from the bank.
+
+
