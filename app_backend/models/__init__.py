@@ -1,1 +1,1 @@
-from app_backend.models.models import *
+from app_backend.models.accounts import *
