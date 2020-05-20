@@ -69,7 +69,7 @@ class SaltEdge:
         }
 
     def expires_at(self):
-        return str(time.time() + 60)
+        return str(time.time() + 500)
 
     def get(self, url):
         expire = self.expires_at()

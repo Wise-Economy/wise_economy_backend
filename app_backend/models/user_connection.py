@@ -47,7 +47,7 @@ class UserConnection(models.Model):
         consent_payload = {
             'from_date': self.calculate_possible_from_date(),
             'period_days': MAX_RETRIEVAL_DAYS_SALTEDGE,
-            'scopes': ['accounts', 'holder_info', 'transactions']
+            'scopes': ['account_details', 'transactions_details']
         }
 
         # Reference : https://docs.saltedge.com/account_information/v5/#attempts-object
