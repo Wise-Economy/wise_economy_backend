@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Country(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     currency = models.CharField(max_length=10)
     country_name = models.CharField(max_length=20)
     se_country_id = models.IntegerField()
@@ -11,7 +11,7 @@ class Country(models.Model):
 
 
 class BankProvider(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     bank_name = models.CharField(max_length=100)
     bank_country = models.CharField(max_length=10)
     provider_name = models.CharField(max_length=150)
@@ -21,7 +21,7 @@ class BankProvider(models.Model):
 
 
 class BankCustomerInfo(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
     middle_name = models.CharField(max_length=20)

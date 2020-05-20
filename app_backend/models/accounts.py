@@ -4,7 +4,7 @@ from app_backend.models.banking import BankCustomerInfo
 
 
 class Account(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     se_account_id = models.IntegerField()
     se_account_name = models.CharField(max_length=100)
     se_currency = models.CharField(max_length=10)
@@ -18,7 +18,7 @@ class Account(models.Model):
 
 
 class Transaction(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     se_transaction_id = models.IntegerField()
     se_status = models.CharField(max_length=20)
     se_currency = models.CharField(max_length=10)
