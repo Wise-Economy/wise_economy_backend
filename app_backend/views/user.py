@@ -13,8 +13,6 @@ def register(request):
         username=user_payload['username'],
         email=user_payload['email'],
         password=user_payload['password'],
-        created_at=datetime.now(),
-        last_updated=datetime.now(),
     )
     return login(request)
 

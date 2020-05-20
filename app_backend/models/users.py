@@ -9,13 +9,12 @@ from app_backend.helpers.saltedge_urls import *
 
 
 class AppUser(User):
-
     se_customer_id = models.IntegerField(default=None, blank=True, null=True)
     se_identifier = models.CharField(default=None, blank=True, null=True, max_length=100)
     se_customer_type = models.CharField(default=None, blank=True, null=True, max_length=100)
     created_at = models.DateTimeField()
     last_updated = models.DateTimeField()
-    country_id = models.ForeignKey(Country, default=None, blank=True, null=True, on_delete=models.CASCADE)
+    country = models.ForeignKey(Country, default=None, blank=True, null=True, on_delete=models.CASCADE)
     se_customer_secret = models.CharField(default=None, blank=True, null=True, max_length=200)
 
     def create_saltedge_user_record(self):
