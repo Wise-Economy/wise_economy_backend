@@ -17,7 +17,7 @@ class BankProvider(models.Model):
     provider_name = models.CharField(max_length=150)
     se_provider_code = models.CharField(max_length=150)
     se_country_code = models.CharField(max_length=10)
-    country_id = models.ForeignKey(Country, on_delete=models.CASCADE)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
 
 
 class BankCustomerInfo(models.Model):
@@ -31,4 +31,4 @@ class BankCustomerInfo(models.Model):
     account_type = models.CharField(max_length=20)
     residence_country = models.CharField(max_length=20)
     address = models.CharField(max_length=200)
-    bank_provider_id = models.ForeignKey(BankProvider, on_delete=models.CASCADE)
+    bank_provider = models.ForeignKey(BankProvider, on_delete=models.CASCADE)

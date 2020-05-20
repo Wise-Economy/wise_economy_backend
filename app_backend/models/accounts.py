@@ -12,7 +12,7 @@ class Account(models.Model):
     se_account_nature = models.CharField(max_length=100)
     se_account_holder_name = models.CharField(max_length=100)
     se_available_money = models.IntegerField()
-    bank_customer_info_id = models.ForeignKey(BankCustomerInfo, on_delete=models.CASCADE)
+    bank_customer_info = models.ForeignKey(BankCustomerInfo, on_delete=models.CASCADE)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
 
@@ -28,4 +28,4 @@ class Transaction(models.Model):
     se_transaction_mode = models.CharField(max_length=20)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    account_id = models.ForeignKey(Account, on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
