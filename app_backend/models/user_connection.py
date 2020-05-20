@@ -31,7 +31,7 @@ class UserConnection(models.Model):
     country_code = models.CharField(max_length=10, default=None, blank=True, null=True)
 
     def generate_saltedge_connect_session(self):
-        payload = json.dumps(self._generate_payload())
+        payload = json.dumps(self._generate_payload_for_se_connect_session())
         client = initiate_saltedge_client()
         headers = client.generate_headers()
         headers['Customer-secret'] = self.app_user.se_customer_secret
@@ -42,7 +42,7 @@ class UserConnection(models.Model):
         )
         return response
 
-    def _generate_payload(self):
+    def _generate_payload_for_se_connect_session(self):
         # Reference : https://docs.saltedge.com/account_information/v5/#consents-object
         consent_payload = {
             'from_date': self.calculate_possible_from_date(),
@@ -55,6 +55,10 @@ class UserConnection(models.Model):
             'from_date': self.calculate_possible_from_date(),
             'period_days': MAX_RETRIEVAL_DAYS_SALTEDGE,
             'scopes': ['accounts', 'holder_info', 'transactions'],
+            'fetched_accounts_notify': True,
+            'custom_fields': {
+                'user_conn_id': self.id,
+            }
         }
         return {
             'data': {
