@@ -31,7 +31,7 @@ class AppUser(User):
 
 class UserConnection(models.Model):
     id = models.IntegerField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    app_user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
     bank_provider = models.ForeignKey(BankProvider, on_delete=models.CASCADE)
     bank_customer_info = models.OneToOneField(BankCustomerInfo, on_delete=models.CASCADE)
     se_customer_id = models.IntegerField()
@@ -48,4 +48,3 @@ class UserConnection(models.Model):
     se_connection_secret = models.CharField(max_length=200)
     se_categorization = models.CharField(max_length=200)
     country_code = models.CharField(max_length=10)
-
