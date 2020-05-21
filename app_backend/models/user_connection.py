@@ -35,8 +35,13 @@ class UserConnection(models.Model):
     id = models.AutoField(primary_key=True)
     app_user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
     bank_provider = models.ForeignKey(BankProvider, on_delete=models.CASCADE, default=None, blank=True, null=True)
-    bank_customer_info = models.OneToOneField(BankCustomerInfo, on_delete=models.CASCADE, default=None, blank=True,
-                                              null=True)
+    bank_customer_info = models.OneToOneField(
+        BankCustomerInfo,
+        on_delete=models.CASCADE,
+        default=None,
+        blank=True,
+        null=True,
+    )
     se_customer_id = models.CharField(max_length=200, default=None, blank=True, null=True)
     se_connection_id = models.CharField(max_length=200, default=None, blank=True, null=True)
     created_at = models.DateTimeField()
@@ -110,6 +115,7 @@ class UserConnection(models.Model):
                 self.bank_provider = BankProvider.create_or_return_bank_provider(
                     connection_data=connection_data,
                 )
+                self.se_connection_secret = connection_data['secret']
                 self.se_conn_session_status = SaltEdgeConnectSessionStatus.ACCOUNT_FETCH_SUCCESS.value
                 self.save()
                 return True
