@@ -114,15 +114,14 @@ class UserConnection(models.Model):
                 self.save()
                 return True
         except Exception:
-            # Handle exceptions here
+            # TODO: Handle exceptions here
             print(traceback.print_exc())
             pass
 
         return False
 
     def fetch_accounts_from_saltedge(self):
-        # Fetch holder info -> BankCustomerInfo - Deferring this.
-        # Fetch accounts -> Account
+        # TODO: Fetch holder info -> BankCustomerInfo - Deferring this.
         client = initiate_saltedge_client()
         headers = client.generate_headers()
         headers['Customer-secret'] = self.app_user.se_customer_secret
@@ -130,7 +129,7 @@ class UserConnection(models.Model):
         accounts = response.json()['data']
         for account in accounts:
             self.create_account_for_user_conn(account)
-            # Fetch transactions -> Transaction
+            # TODO: Fetch transactions -> Transaction
 
     def create_account_for_user_conn(self, account):
         self.account_set.create(
