@@ -1,12 +1,14 @@
 from django.db import models
 
-from app_backend.models.banking import BankCustomerInfo
+from app_backend.models.bank_customer_info import BankCustomerInfo
+from app_backend.models.user_connection import UserConnection
 
 
 class Account(models.Model):
     id = models.AutoField(primary_key=True)
     se_account_id = models.IntegerField()
     se_account_name = models.CharField(max_length=100)
+    se_bank_account_id = models.CharField(max_length=100)
     se_currency = models.CharField(max_length=10)
     se_balance = models.IntegerField()
     se_account_nature = models.CharField(max_length=100)
@@ -15,17 +17,4 @@ class Account(models.Model):
     bank_customer_info = models.ForeignKey(BankCustomerInfo, on_delete=models.CASCADE)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-
-
-class Transaction(models.Model):
-    id = models.AutoField(primary_key=True)
-    se_transaction_id = models.IntegerField()
-    se_status = models.CharField(max_length=20)
-    se_currency = models.CharField(max_length=10)
-    se_transaction_amount = models.IntegerField()
-    se_transaction_description = models.CharField(max_length=1000)
-    se_transaction_category = models.CharField(max_length=20)
-    se_transaction_mode = models.CharField(max_length=20)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    user_connection = models.ForeignKey(UserConnection, on_delete=models.CASCADE)

@@ -9,7 +9,7 @@ from datetime import datetime
 
 
 class AppUser(User):
-    se_customer_id = models.BigIntegerField(default=None, blank=True, null=True)
+    se_customer_id = models.CharField(max_length=200, blank=True, null=True)
     se_identifier = models.CharField(default=None, blank=True, null=True, max_length=100)
     se_customer_type = models.CharField(default=None, blank=True, null=True, max_length=100)
     created_at = models.DateTimeField()
@@ -23,11 +23,11 @@ class AppUser(User):
         # TODO : Verify if  this exists and then post
         response = client.post(CREATE_SALTEDGE_CUSTOMER_ACCOUNT_URL, payload)
         se_data = response.json()['data']
-        self.se_customer_id = int(se_data['id'])
+        self.se_customer_id = se_data['id']
         self.se_identifier = se_data['identifier']
         self.se_customer_secret = se_data['secret']
         self.save()
-        return True
+        return self.id
 
     def create_saltedge_user_connection(self):
         user_conn = self.userconnection_set.create(
@@ -37,5 +37,7 @@ class AppUser(User):
             updated_at=datetime.now(),
         )
         user_conn.save()
+        return user_conn
+
 
 

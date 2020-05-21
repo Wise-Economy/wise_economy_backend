@@ -45,6 +45,16 @@ curl -v -H "Accept: application/json" \
         -H "Content-type: application/json" \
         -H "App-id: $APP_ID" \
         -H "Secret: $SECRET" \
+        -H "Customer-secret: bpn7wxEYBkOg8u8-Ccz9hwxdgmtiSZ7OawYS3iRIyAY" \
+        -X GET \
+        https://www.saltedge.com/api/v5/attempts?connection_id=222532063926946594
+
+
+
+curl -v -H "Accept: application/json" \
+        -H "Content-type: application/json" \
+        -H "App-id: $APP_ID" \
+        -H "Secret: $SECRET" \
         -H "Customer-secret: ZNqGjdQ9A2sIH8BpGiO15mz0rZV1YkLE16tnJEiUTnE" \
         -X GET \
         https://www.saltedge.com/api/v5/connections?customer_id=216705875501386009
@@ -75,4 +85,11 @@ curl -v -H "Accept: application/json" \
         https://www.saltedge.com/api/v5/holder_info?connection_id=220983528995686626
 This gives me the holder personal info from the bank.
 
+curl -v -H "Accept: application/json" \
+        -H "Content-type: application/json" \
+        -H "App-id: $APP_ID" \
+        -H "Secret: $SECRET" \
+        -H "Customer-secret: ZNqGjdQ9A2sIH8BpGiO15mz0rZV1YkLE16tnJEiUTnE" \
+        -X GET \
+        https://www.saltedge.com/api/v5/connections/220983528995686626
 
