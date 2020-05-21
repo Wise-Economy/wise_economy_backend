@@ -2,12 +2,20 @@ import json
 from datetime import datetime, timedelta
 
 from django.db import models
+from enum import Enum
 
 from app_backend.helpers.saltedge_client import initiate_saltedge_client
 from app_backend.helpers.saltedge_urls import CREATE_SALTEDGE_USER_CONNECTION_URL
 from app_backend.models import AppUser, BankProvider, BankCustomerInfo
 
 MAX_RETRIEVAL_DAYS_SALTEDGE = 355
+
+
+class SaltEdgeConnectSessionStatus(Enum):
+    DEFAULT = 'UNINITIATED'
+    INITIATED = 'INITIATED'
+    CALLBACK_SUCCESS = 'SUCCESS'
+    CALLBACK_FAILED = 'FAILED'
 
 
 class UserConnection(models.Model):
@@ -29,6 +37,12 @@ class UserConnection(models.Model):
     se_connection_secret = models.CharField(max_length=200, default=None, blank=True, null=True)
     se_categorization = models.CharField(max_length=200, default=None, blank=True, null=True)
     country_code = models.CharField(max_length=10, default=None, blank=True, null=True)
+    se_conn_session_status = models.CharField(
+        max_length=10,
+        default=SaltEdgeConnectSessionStatus.DEFAULT,
+        blank=False,
+        null=False,
+    )
 
     def generate_saltedge_connect_session(self):
         payload = json.dumps(self._generate_payload_for_se_connect_session())
@@ -64,9 +78,23 @@ class UserConnection(models.Model):
             'data': {
                 'customer_id': str(self.app_user.se_customer_id),
                 'consent': consent_payload,
-                'attempt': attempt_payload
+                'attempt': attempt_payload,
+                'return_connection_id': True,
             }
         }
+
+    def update_if_connect_session_success(self):
+        self.se_conn_session_status = SaltEdgeConnectSessionStatus.CALLBACK_SUCCESS
+        self.save()
+
+
+        # Fetch holder info -> BankCustomerInfo
+        # Fetch accounts -> Account
+        # Fetch transactions -> Transaction
+        # Fetch bankprovider -> BankProvider
+        # Countries should be populated prior.
+
+
 
     @staticmethod
     def calculate_possible_from_date():
