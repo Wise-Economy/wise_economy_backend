@@ -74,7 +74,8 @@ curl -v -H "Accept: application/json" \
         -H "App-id: $APP_ID" \
         -H "Secret: $SECRET" \
         -X GET \
-        https://www.saltedge.com/api/v5/transactions?connection_id=220983528995686626&account_id=220984266371107189
+        -H "Customer-secret: bpn7wxEYBkOg8u8-Ccz9hwxdgmtiSZ7OawYS3iRIyAY" \
+        https://www.saltedge.com/api/v5/transactions?connection_id=222532063926946594&account_id=222532203270114127
 This gives me the transactions for each account in a connection.
 
 curl -v -H "Accept: application/json" \

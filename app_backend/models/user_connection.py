@@ -133,12 +133,13 @@ class UserConnection(models.Model):
         headers['Customer-secret'] = self.app_user.se_customer_secret
         response = client.get(ACCOUNT_INFO_URL + "?connection_id=" + self.se_conn)
         accounts = response.json()['data']
+        accounts_in_db = []
         for account in accounts:
-            self.create_account_for_user_conn(account)
-            # TODO: Fetch transactions -> Transaction
+            accounts_in_db.append(self.create_account_for_user_conn(account))
+        UserConnection.fetch_transactions_for_accounts_linked(accounts_in_db)
 
     def create_account_for_user_conn(self, account):
-        self.account_set.create(
+        return self.account_set.create(
             se_account_id=account["id"],
             se_bank_account_id=account["name"],
             se_balance=account["balance"],
@@ -163,3 +164,8 @@ class UserConnection(models.Model):
     def calculate_possible_from_date():
         return (datetime.now() - timedelta(days=MAX_RETRIEVAL_DAYS_SALTEDGE)) \
             .strftime("%Y-%m-%d")
+
+    @staticmethod
+    def fetch_transactions_for_accounts_linked(accounts_in_db):
+        for account in accounts_in_db:
+            account.populate_transactions_in_db()

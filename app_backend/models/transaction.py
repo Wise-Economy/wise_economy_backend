@@ -1,6 +1,6 @@
 from django.db import models
-
-from app_backend.models import Account
+from django.contrib.postgres.fields import JSONField
+from app_backend.models.account import Account
 
 
 class Transaction(models.Model):
@@ -12,6 +12,11 @@ class Transaction(models.Model):
     se_transaction_description = models.CharField(max_length=1000)
     se_transaction_category = models.CharField(max_length=20)
     se_transaction_mode = models.CharField(max_length=20)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    balance_snapshot = models.IntegerField()
+    se_mode = models.CharField(max_length=20)
+    se_status = models.CharField(max_length=20)
+    se_made_on = models.DateTimeField
+    payee_info = JSONField()
