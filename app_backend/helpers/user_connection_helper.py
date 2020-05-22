@@ -12,7 +12,7 @@ def update_saltedge_connection_success(se_connection_id, user_connection_id):
     user_connection_obj.se_connection_id = se_connection_id
     user_connection_obj.se_conn_session_status = SaltEdgeConnectSessionStatus.CALLBACK_SUCCESS.value
     user_connection_obj.save()
-    if user_connection_obj.update_if_account_fetch_success():
+    if update_if_account_fetch_success(user_connection_obj):
         fetch_accounts_from_saltedge(user_connection_obj)
     else:
         print("Account update skipping as the accounts are not fetched into Saltedge.")
@@ -27,7 +27,7 @@ def update_if_account_fetch_success(user_connection):
     try:
         last_attempt = connection_data['last_attempt']
         fetch_status = last_attempt['last_stage']['name']
-        if fetch_status == SaltEdgeAccountFetchStatus.FINISH:
+        if fetch_status == SaltEdgeAccountFetchStatus.FINISH.value:
             user_connection.bank_provider = BankProvider.create_or_return_bank_provider(
                 connection_data=connection_data,
             )
@@ -48,7 +48,7 @@ def fetch_accounts_from_saltedge(user_connection):
     client = initiate_saltedge_client()
     headers = client.generate_headers()
     headers['Customer-secret'] = user_connection.app_user.se_customer_secret
-    response = client.get(ACCOUNT_INFO_URL + "?connection_id=" + user_connection.se_conn)
+    response = client.get(ACCOUNT_INFO_URL + "?connection_id=" + user_connection.se_connection_id)
     accounts = response.json()['data']
     accounts_in_db = []
     for account in accounts:
@@ -61,8 +61,7 @@ def create_account_for_user_conn(user_connection, saltedge_account_response):
         se_account_id=saltedge_account_response["id"],
         se_bank_account_id=saltedge_account_response["name"],
         se_balance=saltedge_account_response["balance"],
-        se_currency=saltedge_account_response["currency"],
+        se_currency=saltedge_account_response["currency_code"],
         se_account_nature=saltedge_account_response["nature"],
-        se_available_money=saltedge_account_response["extra"]["available_amount"],
         se_account_holder_name=saltedge_account_response["extra"]["account_name"],
     )

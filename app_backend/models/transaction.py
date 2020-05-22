@@ -5,7 +5,7 @@ from app_backend.models.account import Account
 
 class Transaction(models.Model):
     id = models.AutoField(primary_key=True)
-    se_transaction_id = models.IntegerField()
+    se_transaction_id = models.CharField(max_length=100)
     se_status = models.CharField(max_length=20)
     se_currency = models.CharField(max_length=10)
     se_transaction_amount = models.IntegerField()
