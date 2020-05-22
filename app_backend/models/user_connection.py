@@ -1,12 +1,10 @@
 import json
 from datetime import datetime, timedelta
-import traceback
 from django.db import models
 from enum import Enum
 
 from app_backend.helpers.saltedge_client import initiate_saltedge_client
 from app_backend.helpers.saltedge_urls import CREATE_SALTEDGE_USER_CONNECTION_URL
-from app_backend.helpers.saltedge_urls import ACCOUNT_INFO_URL, GET_CONNECTIONS_INFO_URL
 from app_backend.models.bank_customer_info import BankCustomerInfo
 from app_backend.models.bank_provider import BankProvider
 from app_backend.models.user import AppUser
@@ -102,70 +100,7 @@ class UserConnection(models.Model):
             }
         }
 
-    def update_if_account_fetch_success(self):
-        client = initiate_saltedge_client()
-        headers = client.generate_headers()
-        headers['Customer-secret'] = self.app_user.se_customer_secret
-        response = client.get(GET_CONNECTIONS_INFO_URL + "/" + self.se_connection_id)
-        connection_data = response.json()['data']
-        try:
-            last_attempt = connection_data['last_attempt']
-            fetch_status = last_attempt['last_stage']['name']
-            if fetch_status == SaltEdgeAccountFetchStatus.FINISH:
-                self.bank_provider = BankProvider.create_or_return_bank_provider(
-                    connection_data=connection_data,
-                )
-                self.se_connection_secret = connection_data['secret']
-                self.se_conn_session_status = SaltEdgeConnectSessionStatus.ACCOUNT_FETCH_SUCCESS.value
-                self.save()
-                return True
-        except Exception:
-            # TODO: Handle exceptions here
-            print(traceback.print_exc())
-            pass
-
-        return False
-
-    def fetch_accounts_from_saltedge(self):
-        # TODO: Fetch holder info -> BankCustomerInfo - Deferring this.
-        client = initiate_saltedge_client()
-        headers = client.generate_headers()
-        headers['Customer-secret'] = self.app_user.se_customer_secret
-        response = client.get(ACCOUNT_INFO_URL + "?connection_id=" + self.se_conn)
-        accounts = response.json()['data']
-        accounts_in_db = []
-        for account in accounts:
-            accounts_in_db.append(self.create_account_for_user_conn(account))
-        UserConnection.fetch_transactions_for_accounts_linked(accounts_in_db)
-
-    def create_account_for_user_conn(self, account):
-        return self.account_set.create(
-            se_account_id=account["id"],
-            se_bank_account_id=account["name"],
-            se_balance=account["balance"],
-            se_currency=account["currency"],
-            se_account_nature=account["nature"],
-            se_available_money=account["extra"]["available_amount"],
-            se_account_holder_name=account["extra"]["account_name"],
-        )
-
-    @staticmethod
-    def update_saltedge_connection_success(se_connection_id, user_connection_id):
-        user_connection_obj = UserConnection.objects.get(id=user_connection_id)
-        user_connection_obj.se_connection_id = se_connection_id
-        user_connection_obj.se_conn_session_status = SaltEdgeConnectSessionStatus.CALLBACK_SUCCESS.value
-        user_connection_obj.save()
-        if user_connection_obj.update_if_account_fetch_success():
-            user_connection_obj.fetch_accounts_from_saltedge()
-        else:
-            print("Account update skipping as the accounts are not fetched into Saltedge.")
-
     @staticmethod
     def calculate_possible_from_date():
         return (datetime.now() - timedelta(days=MAX_RETRIEVAL_DAYS_SALTEDGE)) \
             .strftime("%Y-%m-%d")
-
-    @staticmethod
-    def fetch_transactions_for_accounts_linked(accounts_in_db):
-        for account in accounts_in_db:
-            account.populate_transactions_in_db()
