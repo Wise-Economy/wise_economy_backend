@@ -12,8 +12,8 @@ class AppUser(User):
     se_customer_id = models.CharField(max_length=200, blank=True, null=True)
     se_identifier = models.CharField(default=None, blank=True, null=True, max_length=100)
     se_customer_type = models.CharField(default=None, blank=True, null=True, max_length=100)
-    created_at = models.DateTimeField()
-    last_updated = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
     country = models.ForeignKey(Country, default=None, blank=True, null=True, on_delete=models.CASCADE)
     se_customer_secret = models.CharField(default=None, blank=True, null=True, max_length=200)
 
@@ -27,7 +27,7 @@ class AppUser(User):
         self.se_identifier = se_data['identifier']
         self.se_customer_secret = se_data['secret']
         self.save()
-        return self.id
+        return self.se_customer_id
 
     def create_saltedge_user_connection(self):
         user_conn = self.userconnection_set.create(

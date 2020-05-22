@@ -2,7 +2,6 @@ from django.db import models
 
 from app_backend.models.bank_provider import BankProvider
 
-
 class BankCustomerInfo(models.Model):
     id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=20)
@@ -15,3 +14,5 @@ class BankCustomerInfo(models.Model):
     residence_country = models.CharField(max_length=20)
     address = models.CharField(max_length=200)
     bank_provider = models.ForeignKey(BankProvider, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

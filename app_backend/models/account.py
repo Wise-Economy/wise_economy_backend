@@ -15,8 +15,8 @@ class Account(models.Model):
     se_account_holder_name = models.CharField(max_length=100)
     se_available_money = models.IntegerField()
     bank_customer_info = models.ForeignKey(BankCustomerInfo, on_delete=models.CASCADE)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     user_connection = models.ForeignKey(UserConnection, on_delete=models.CASCADE, blank=True, null=True)
 
 

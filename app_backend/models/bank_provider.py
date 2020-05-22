@@ -9,6 +9,8 @@ class BankProvider(models.Model):
     se_provider_code = models.CharField(max_length=150)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
     se_provider_id = models.IntegerField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     @staticmethod
     def create_or_return_bank_provider(connection_data):

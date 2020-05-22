@@ -4,6 +4,7 @@ from app_backend.models.user_connection import SaltEdgeAccountFetchStatus, SaltE
 from app_backend.models.bank_provider import BankProvider
 from app_backend.models.user_connection import UserConnection
 import traceback
+from app_backend.helpers.account_helper import fetch_transactions_for_accounts_linked
 
 
 def update_saltedge_connection_success(se_connection_id, user_connection_id):
@@ -12,7 +13,7 @@ def update_saltedge_connection_success(se_connection_id, user_connection_id):
     user_connection_obj.se_conn_session_status = SaltEdgeConnectSessionStatus.CALLBACK_SUCCESS.value
     user_connection_obj.save()
     if user_connection_obj.update_if_account_fetch_success():
-        user_connection_obj.fetch_accounts_from_saltedge()
+        fetch_accounts_from_saltedge(user_connection_obj)
     else:
         print("Account update skipping as the accounts are not fetched into Saltedge.")
 
@@ -51,8 +52,8 @@ def fetch_accounts_from_saltedge(user_connection):
     accounts = response.json()['data']
     accounts_in_db = []
     for account in accounts:
-        accounts_in_db.append(user_connection.create_account_for_user_conn(account))
-    UserConnection.fetch_transactions_for_accounts_linked(accounts_in_db)
+        accounts_in_db.append(create_account_for_user_conn(user_connection, account))
+    fetch_transactions_for_accounts_linked(accounts_in_db)
 
 
 def create_account_for_user_conn(user_connection, saltedge_account_response):
