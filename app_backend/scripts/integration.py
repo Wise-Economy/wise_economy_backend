@@ -16,7 +16,7 @@ user_connection = app_user.create_saltedge_user_connection()
 print("Created user connection object, id : " + str(user_connection.id))
 connect_session_response = user_connection.generate_saltedge_connect_session()
 print("Created saltedge connect session..")
-print(connect_session_response)
+print(connect_session_response.json())
 
 se_conn_id = input("Please enter the saltedge connection id : ")
 update_saltedge_connection_success(se_connection_id=se_conn_id, user_connection_id=user_connection.id)

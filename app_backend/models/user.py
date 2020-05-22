@@ -39,7 +39,7 @@ class AppUser(User):
         return user_conn
 
     def return_balances_for_user(self):
-        for user_conn in self.userconnection_set:
-            accounts = user_conn.accounts
+        for user_conn in self.userconnection_set.all():
+            accounts = user_conn.account_set.all()
             for account in accounts:
                 account.print_details()
