@@ -61,7 +61,8 @@ def create_or_return_account_for_user_conn(user_connection, saltedge_account_res
     user_bank_account = saltedge_account_response["name"]
     user_account = user_connection.account_set.filter(se_bank_account_id=user_bank_account).first()
     if user_account is not None:
-        user_account.update(se_balance=saltedge_account_response["balance"])
+        user_connection.account_set.filter(se_bank_account_id=user_bank_account).update(
+            se_balance=saltedge_account_response["balance"])
         return user_account
     return user_connection.account_set.create(
         se_account_id=saltedge_account_response["id"],
@@ -69,5 +70,5 @@ def create_or_return_account_for_user_conn(user_connection, saltedge_account_res
         se_balance=saltedge_account_response["balance"],
         se_currency=saltedge_account_response["currency_code"],
         se_account_nature=saltedge_account_response["nature"],
-        #se_account_holder_name=saltedge_account_response["extra"]["account_name"],
+        # se_account_holder_name=saltedge_account_response["extra"]["account_name"],
     )

@@ -18,10 +18,10 @@ class AppUser(User):
     se_customer_secret = models.CharField(default=None, blank=True, null=True, max_length=200)
 
     def create_or_return_saltedge_user_record(self):
-        user_record = User.objects.filter(email=self.email)
+        user_record = AppUser.objects.filter(email=self.email)
         user_data = user_record.first()
         if user_record.exists() and user_data.se_customer_id is not None:
-            return user_record.se_customer_id
+            return user_data.se_customer_id
 
         client = initiate_saltedge_client()
         payload = json.dumps({'data': {'identifier': self.email}})
@@ -35,6 +35,9 @@ class AppUser(User):
         return self.se_customer_id
 
     def create_saltedge_user_connection(self):
+        user_conn = self.userconnection_set.filter(se_customer_id=self.se_customer_id).first()
+        if user_conn is not None:
+            return user_conn
         user_conn = self.userconnection_set.create(
             se_customer_id=self.se_customer_id,
             created_at=datetime.now(),
