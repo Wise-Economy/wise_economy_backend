@@ -8,7 +8,7 @@ class Account(models.Model):
     id = models.AutoField(primary_key=True)
     se_account_id = models.CharField(max_length=100)
     se_account_name = models.CharField(max_length=100)
-    se_bank_account_id = models.CharField(max_length=100, default='Not Set')
+    se_bank_account_id = models.CharField(max_length=100, unique=True, default='Not Set')
     se_currency = models.CharField(max_length=10)
     se_balance = models.IntegerField()
     se_account_nature = models.CharField(max_length=100)

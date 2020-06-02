@@ -17,7 +17,12 @@ class AppUser(User):
     country = models.ForeignKey(Country, default=None, blank=True, null=True, on_delete=models.CASCADE)
     se_customer_secret = models.CharField(default=None, blank=True, null=True, max_length=200)
 
-    def create_saltedge_user_record(self):
+    def create_or_return_saltedge_user_record(self):
+        user_record = User.objects.filter(email=self.email)
+        user_data = user_record.first()
+        if user_record.exists() and user_data.se_customer_id is not None:
+            return user_record.se_customer_id
+
         client = initiate_saltedge_client()
         payload = json.dumps({'data': {'identifier': self.email}})
         # TODO : Verify if  this exists and then post
