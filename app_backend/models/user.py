@@ -35,9 +35,6 @@ class AppUser(User):
         return self.se_customer_id
 
     def create_saltedge_user_connection(self):
-        user_conn = self.userconnection_set.filter(se_customer_id=self.se_customer_id).first()
-        if user_conn is not None:
-            return user_conn
         user_conn = self.userconnection_set.create(
             se_customer_id=self.se_customer_id,
             created_at=datetime.now(),

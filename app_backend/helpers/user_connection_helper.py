@@ -23,6 +23,7 @@ def update_if_account_fetch_success(user_connection):
     headers = client.generate_headers()
     headers['Customer-secret'] = user_connection.app_user.se_customer_secret
     response = client.get(GET_CONNECTIONS_INFO_URL + "/" + user_connection.se_connection_id)
+    print("response is ", response.json())
     connection_data = response.json()['data']
     try:
         last_attempt = connection_data['last_attempt']
@@ -50,6 +51,7 @@ def fetch_accounts_from_saltedge(user_connection):
     headers = client.generate_headers()
     headers['Customer-secret'] = user_connection.app_user.se_customer_secret
     response = client.get(ACCOUNT_INFO_URL + "?connection_id=" + user_connection.se_connection_id)
+    print("response for accounts is ", response.json())
     accounts = response.json()['data']
     accounts_in_db = []
     for account in accounts:
@@ -70,5 +72,5 @@ def create_or_return_account_for_user_conn(user_connection, saltedge_account_res
         se_balance=saltedge_account_response["balance"],
         se_currency=saltedge_account_response["currency_code"],
         se_account_nature=saltedge_account_response["nature"],
-        # se_account_holder_name=saltedge_account_response["extra"]["account_name"],
+        se_account_holder_name=saltedge_account_response["extra"]["client_name"],
     )
