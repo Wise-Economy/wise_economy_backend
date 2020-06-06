@@ -23,7 +23,6 @@ def update_if_account_fetch_success(user_connection):
     headers = client.generate_headers()
     headers['Customer-secret'] = user_connection.app_user.se_customer_secret
     response = client.get(GET_CONNECTIONS_INFO_URL + "/" + user_connection.se_connection_id)
-    print("response is ", response.json())
     connection_data = response.json()['data']
     try:
         last_attempt = connection_data['last_attempt']
