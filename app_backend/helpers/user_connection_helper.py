@@ -45,23 +45,31 @@ def update_if_account_fetch_success(user_connection):
 
 def fetch_accounts_from_saltedge(user_connection):
     # TODO: Fetch holder info -> BankCustomerInfo - Deferring this.
+
     client = initiate_saltedge_client()
     headers = client.generate_headers()
     headers['Customer-secret'] = user_connection.app_user.se_customer_secret
     response = client.get(ACCOUNT_INFO_URL + "?connection_id=" + user_connection.se_connection_id)
+    print("response for accounts is ", response.json())
     accounts = response.json()['data']
     accounts_in_db = []
     for account in accounts:
-        accounts_in_db.append(create_account_for_user_conn(user_connection, account))
+        accounts_in_db.append(create_or_return_account_for_user_conn(user_connection, account))
     fetch_transactions_for_accounts_linked(accounts_in_db)
 
 
-def create_account_for_user_conn(user_connection, saltedge_account_response):
+def create_or_return_account_for_user_conn(user_connection, saltedge_account_response):
+    user_bank_account = saltedge_account_response["name"]
+    user_account = user_connection.account_set.filter(se_bank_account_id=user_bank_account).first()
+    if user_account is not None:
+        user_connection.account_set.filter(se_bank_account_id=user_bank_account).update(
+            se_balance=saltedge_account_response["balance"])
+        return user_account
     return user_connection.account_set.create(
         se_account_id=saltedge_account_response["id"],
-        se_bank_account_id=saltedge_account_response["name"],
+        se_bank_account_id=user_bank_account,
         se_balance=saltedge_account_response["balance"],
         se_currency=saltedge_account_response["currency_code"],
         se_account_nature=saltedge_account_response["nature"],
-        se_account_holder_name=saltedge_account_response["extra"]["account_name"],
+        se_account_holder_name=saltedge_account_response["extra"]["client_name"],
     )
