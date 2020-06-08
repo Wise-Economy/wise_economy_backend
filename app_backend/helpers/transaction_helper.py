@@ -30,4 +30,4 @@ def populate_transactions_in_db(account):
     transaction_models = []
     for transaction in transactions:
         transaction_models.append(make_transaction_obj_from_payload(transaction, account.id))
-    Transaction.objects.bulk_create(transaction_models)
+    Transaction.objects.bulk_create(transaction_models, ignore_conflicts=True)
