@@ -8,8 +8,10 @@ pip3 install virtualenv
 virtualenv venv
 virtualenv -p python3 venv
 source venv/bin/activate
+# correct requirements.txt file
+# install psycopg2 lib - FIXIT!
 pip3 install -r requirements.txt
-source ~/.bashrc
+source ~/.bashrc # shouldn't have to do this everytime?
 # set up DB.
 # Install postgresql.
 # CREATE DATABASE wise_economy;
