@@ -20,4 +20,4 @@ print(connect_session_response.json())
 
 se_conn_id = input("Please enter the saltedge connection id : ")
 update_saltedge_connection_success(se_connection_id=se_conn_id, user_connection_id=user_connection.id)
-app_user.return_balances_for_user()
+print(app_user.return_balances_for_user())

@@ -21,6 +21,6 @@ class Account(models.Model):
     user_connection = models.ForeignKey(UserConnection, on_delete=models.CASCADE, blank=True, null=True)
 
     def print_details(self):
-        print(f"Account by the name {self.se_account_name} held by "
+        return(f"Account by the name {self.se_account_name} held by "
               f"{self.se_account_holder_name} has {self.se_balance} {self.se_currency}")
 
