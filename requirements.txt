@@ -36,3 +36,4 @@ sqlparse
 traitlets
 urllib3
 wcwidth
+mock
