@@ -2,10 +2,21 @@ import json
 
 from django.contrib.auth.models import User
 from django.db import models
-from app_backend.models.banking import Country
+from app_backend.models.country import Country
 from app_backend.helpers.saltedge_client import initiate_saltedge_client
 from app_backend.helpers.saltedge_urls import *
 from datetime import datetime
+import traceback
+
+
+class USER_DEFAULTS:
+    DEFAULT_PASSWORD = "WhateverPassword12#"
+
+
+class SIGN_IN_METHODS:
+    GOOGLE_SIGN_IN = "google"
+    EMAIL_SIGN_IN = "email"
+    APPLE_ID_SIGN_IN = "apple"
 
 
 def create_saltedge_user(payload):
@@ -20,8 +31,14 @@ class AppUser(User):
     se_customer_type = models.CharField(default=None, blank=True, null=True, max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
-    country = models.ForeignKey(Country, default=None, blank=True, null=True, on_delete=models.CASCADE)
+    date_of_birth = models.DateField(default=None, blank=True, null=True)
+    resident_country = models.ForeignKey(Country, default=None, blank=True, null=True, on_delete=models.CASCADE)
     se_customer_secret = models.CharField(default=None, blank=True, null=True, max_length=200)
+    google_id = models.CharField(default=None, blank=True, null=True, max_length=200)
+    profile_photo = models.CharField(default=None, blank=True, null=True, max_length=200)
+    full_name = models.CharField(default=None, blank=True, null=True, max_length=200)
+    sign_in_method = models.CharField(default=None, blank=True, null=True, max_length=20)
+    phone_number = models.CharField(default=None, blank=True, null=True, max_length=20)
 
     def create_or_return_saltedge_user_record(self):
         user_record = AppUser.objects.filter(email=self.email)
@@ -54,3 +71,34 @@ class AppUser(User):
             accounts = user_conn.account_set.all()
             for account in accounts:
                 return account.print_details()
+
+    def get_user_details(self):
+        user_details = {
+            "full_name": self.full_name,
+            "date_of_birth": self.date_of_birth,
+            "phone_number": self.phone_number,
+            "email": self.email,
+            "profile_photo": self.profile_photo,
+        }
+        if self.resident_country:
+            user_details["residence_country"] = {
+                "country_id": self.resident_country.id,
+                "country_name": self.resident_country.country_name,
+            }
+        return user_details
+
+    def register_user_details(self, user_details):
+        try:
+            self.full_name = user_details['full_name']
+            self.date_of_birth = user_details['date_of_birth']
+            self.phone_number = user_details['phone_number']
+            self.email = user_details['email']
+            self.resident_country = Country.objects.get(
+                id=user_details['residence_country']['country_id']
+            )
+            self.profile_photo = user_details['profile_photo']
+            self.save()
+            return True
+        except Exception:
+            print(traceback.format_exc())
+            return False

@@ -2,6 +2,7 @@ from django.db import models
 
 from app_backend.models.bank_customer_info import BankCustomerInfo
 from app_backend.models.user_connection import UserConnection
+from app_backend.models.user import User
 
 
 class Account(models.Model):
@@ -18,9 +19,12 @@ class Account(models.Model):
     bank_customer_info = models.ForeignKey(BankCustomerInfo, on_delete=models.CASCADE, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     user_connection = models.ForeignKey(UserConnection, on_delete=models.CASCADE, blank=True, null=True)
 
-    def print_details(self):
-        return(f"Account by the name {self.se_account_name} held by "
-              f"{self.se_account_holder_name} has {self.se_balance} {self.se_currency}")
+    class Meta:
+        unique_together = ("user", "se_bank_account_id")
 
+    def print_details(self):
+        return (f"Account by the name {self.se_account_name} held by "
+                f"{self.se_account_holder_name} has {self.se_balance} {self.se_currency}")
