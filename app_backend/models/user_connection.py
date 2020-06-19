@@ -58,8 +58,12 @@ class UserConnection(models.Model):
         null=False,
     )
 
-    def generate_saltedge_connect_session(self):
-        payload = json.dumps(self._generate_payload_for_se_connect_session())
+    def generate_saltedge_connect_session(self, country_code=None):
+        payload = json.dumps(
+            self._generate_payload_for_se_connect_session(
+                country_code=country_code,
+            )
+        )
         client = initiate_saltedge_client()
         headers = client.generate_headers()
         headers['Customer-secret'] = self.app_user.se_customer_secret
@@ -68,14 +72,14 @@ class UserConnection(models.Model):
             payload=payload,
             headers=headers,
         )
-        return response
+        return response.json()
 
-    def _generate_payload_for_se_connect_session(self):
+    def _generate_payload_for_se_connect_session(self, country_code=None):
         # Reference : https://docs.saltedge.com/account_information/v5/#consents-object
         consent_payload = {
             'from_date': self.calculate_possible_from_date(),
             'period_days': MAX_RETRIEVAL_DAYS_SALTEDGE,
-            'scopes': ['account_details', 'transactions_details']
+            'scopes': ['account_details', 'holder_information', 'transactions_details']
         }
 
         # Reference : https://docs.saltedge.com/account_information/v5/#attempts-object
@@ -96,6 +100,7 @@ class UserConnection(models.Model):
                 'customer_id': str(self.app_user.se_customer_id),
                 'consent': consent_payload,
                 'attempt': attempt_payload,
+                'allowed_countries': [country_code],
                 'return_connection_id': True,
             }
         }

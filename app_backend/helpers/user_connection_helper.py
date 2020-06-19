@@ -45,7 +45,6 @@ def update_if_account_fetch_success(user_connection):
 
 def fetch_accounts_from_saltedge(user_connection):
     # TODO: Fetch holder info -> BankCustomerInfo - Deferring this.
-
     client = initiate_saltedge_client()
     headers = client.generate_headers()
     headers['Customer-secret'] = user_connection.app_user.se_customer_secret
@@ -71,5 +70,5 @@ def create_or_return_account_for_user_conn(user_connection, saltedge_account_res
         se_balance=saltedge_account_response["balance"],
         se_currency=saltedge_account_response["currency_code"],
         se_account_nature=saltedge_account_response["nature"],
-        se_account_holder_name=saltedge_account_response["extra"]["client_name"],
+        se_account_holder_name=saltedge_account_response["extra"]["account_name"],
     )

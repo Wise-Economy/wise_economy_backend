@@ -51,26 +51,12 @@ def register(request):
     if user.is_authenticated:
         app_user = AppUser.objects.get(id=user.id)
         if app_user.register_user_details(user_details_payload):
+            app_user.create_or_return_saltedge_user_record()
             return JsonResponse({
                 "user_details": app_user.get_user_details(),
             })
         else:
             return HttpResponseServerError
-
-
-def login(request, is_new_user, app_user):
-    # TODO: What if somebody steals the session from our app. Is that possible?
-    login_payload = json.loads(request.body)
-    auth.authenticate(
-        username=login_payload['email'],
-        password=USER_DEFAULTS.DEFAULT_PASSWORD,
-    )
-    if app_user is not None and app_user.is_active:
-        auth.login(request, app_user)
-        return JsonResponse({
-            "is_new_user": is_new_user,
-            "user_details": app_user.get_user_details(),
-        })
 
 
 @csrf_exempt
@@ -89,3 +75,18 @@ def get_enabled_countries(request):
         for country in enabled_countries
     ]
     return JsonResponse({"enabled_countries_list": response_array})
+
+
+def login(request, is_new_user, app_user):
+    # TODO: What if somebody steals the session from our app. Is that possible?
+    login_payload = json.loads(request.body)
+    auth.authenticate(
+        username=login_payload['email'],
+        password=USER_DEFAULTS.DEFAULT_PASSWORD,
+    )
+    if app_user is not None and app_user.is_active:
+        auth.login(request, app_user)
+        return JsonResponse({
+            "is_new_user": is_new_user,
+            "user_details": app_user.get_user_details(),
+        })
