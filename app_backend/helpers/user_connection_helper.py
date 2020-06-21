@@ -7,6 +7,20 @@ import traceback
 from app_backend.helpers.account_helper import fetch_transactions_for_accounts_linked
 
 
+def get_connections_from_saltedge(user_connection):
+    client = initiate_saltedge_client()
+    headers = client.generate_headers()
+    headers['Customer-secret'] = user_connection.app_user.se_customer_secret
+    return client.get(GET_CONNECTIONS_INFO_URL + "/" + user_connection.se_connection_id)
+
+
+def get_accounts_from_saltedge(user_connection):
+    client = initiate_saltedge_client()
+    headers = client.generate_headers()
+    headers['Customer-secret'] = user_connection.app_user.se_customer_secret
+    return client.get(ACCOUNT_INFO_URL + "?connection_id=" + user_connection.se_connection_id)
+
+
 def update_saltedge_connection_success(se_connection_id, user_connection_id):
     user_connection_obj = UserConnection.objects.get(id=user_connection_id)
     user_connection_obj.se_connection_id = se_connection_id
@@ -14,15 +28,13 @@ def update_saltedge_connection_success(se_connection_id, user_connection_id):
     user_connection_obj.save()
     if update_if_account_fetch_success(user_connection_obj):
         fetch_accounts_from_saltedge(user_connection_obj)
+        return "Accounts update successful"
     else:
-        print("Account update skipping as the accounts are not fetched into Saltedge.")
+        return "Account update skipping as the accounts are not fetched into Saltedge."
 
 
 def update_if_account_fetch_success(user_connection):
-    client = initiate_saltedge_client()
-    headers = client.generate_headers()
-    headers['Customer-secret'] = user_connection.app_user.se_customer_secret
-    response = client.get(GET_CONNECTIONS_INFO_URL + "/" + user_connection.se_connection_id)
+    response = get_connections_from_saltedge(user_connection)
     connection_data = response.json()['data']
     try:
         last_attempt = connection_data['last_attempt']
@@ -46,10 +58,7 @@ def update_if_account_fetch_success(user_connection):
 def fetch_accounts_from_saltedge(user_connection):
     # TODO: Fetch holder info -> BankCustomerInfo - Deferring this.
 
-    client = initiate_saltedge_client()
-    headers = client.generate_headers()
-    headers['Customer-secret'] = user_connection.app_user.se_customer_secret
-    response = client.get(ACCOUNT_INFO_URL + "?connection_id=" + user_connection.se_connection_id)
+    response = get_accounts_from_saltedge(user_connection)
     print("response for accounts is ", response.json())
     accounts = response.json()['data']
     accounts_in_db = []
