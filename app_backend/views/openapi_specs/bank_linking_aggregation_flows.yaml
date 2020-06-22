@@ -1,0 +1,92 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Saltedge Connection
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /countries_linkable/show:
+    get:
+      summary: 'List the two countries that have to be shown in the global homescreen. Authentication will done by using session_token in the request headers.'
+      operationId: showCountriesLinkable
+      tags:
+        - bank_account
+      responses:
+        '200':
+          description: 'Response containing the countries to be shown.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountryLinkable'
+  /saltedge/connect:
+    get:
+      summary: 'Start a connect session with Saltedge. Authentication will done by using session_token in the request headers.'
+      operationId: saltedgeConnect
+      tags:
+        - saltedge
+      parameters:
+        - name: country_id
+          in: query
+          description: Country Id from our database.
+          required: True
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Response containing connect session url & user_connection_id.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaltedgeConnectSessionResponse'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    SaltedgeConnectSessionResponse:
+      type: object
+      required:
+        - user_connection_id
+        - connect_session_url
+        - expires_at
+      properties:
+        user_connection_id:
+          type: integer
+          format: int64
+        connect_session_url:
+          type: string
+        expires_at:
+          type: date-time
+    CountryLinkable:
+      type: object
+      required:
+        - countries_linkable
+      properties:
+        countries_linkable:
+          type: array
+          items:
+            $ref: '#/components/schemas/Country'
+    Country:
+      type: object
+      required:
+        - country_id
+        - country_name
+      properties:
+        country_id:
+          type: integer
+        country_name:
+          type: string
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
