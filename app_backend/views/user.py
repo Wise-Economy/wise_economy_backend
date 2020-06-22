@@ -10,7 +10,6 @@ from django.http import HttpResponseForbidden, HttpResponseServerError
 from app_backend.models.country import Country
 
 
-
 @csrf_exempt
 def google_connect(request):
     payload = json.loads(request.body)
@@ -22,7 +21,7 @@ def google_connect(request):
             email=payload['email'],
             google_id=payload['google_id']
     ):
-        return HttpResponseForbidden()
+        return HttpResponseForbidden(content=json.dumps({"message": "INVALID_GOOGLE_TOKEN"}))
 
     try:
         app_user = AppUser.objects.get(email=payload['email'])
@@ -51,13 +50,14 @@ def register(request):
     user = request.user
     if user.is_authenticated:
         app_user = AppUser.objects.get(id=user.id)
-        if app_user.register_user_details(user_details_payload):
+        if False:
             app_user.create_or_return_saltedge_user_record()
             return JsonResponse({
                 "user_details": app_user.get_user_details(),
             })
         else:
-            return HttpResponseServerError
+            return HttpResponseServerError(content=json.dumps({"message": "FAILED_UPDATE"}))
+    return HttpResponseForbidden(content=json.dumps({"message": "INVALID_SESSION"}))
 
 
 @csrf_exempt

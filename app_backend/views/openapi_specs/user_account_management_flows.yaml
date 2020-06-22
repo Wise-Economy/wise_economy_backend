@@ -6,7 +6,7 @@ info:
 servers:
   - url: http://127.0.0.1:8000/
 paths:
-  /google/connect:
+  /google_connect:
     post:
       description: Connect using Google account
       operationId: googleConnect
@@ -24,6 +24,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConnectSuccess'
+        '403':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthFailure'
         default:
           description: unexpected error
           content:
@@ -48,6 +54,12 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/RegisterSuccess'
+          '403':
+            description: Authentication failed
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/AuthFailure'
   /get_enabled_countries:
     get:
       description: Get all host countries enabled, Authentication will done by using session_token in the request headers.
@@ -77,14 +89,14 @@ components:
       required:
         - google_id
         - full_name
-        - photo_url
+        - profile_photo
         - email
       properties:
         google_id:
           type: string
         full_name:
           type: string
-        photo_url:
+        profile_photo:
           type: string
         email:
           type: string
@@ -100,6 +112,13 @@ components:
           type: boolean
         user_details:
           $ref: '#/components/schemas/UserDetails'
+    AuthFailure:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
     RegisterSuccess:
       type: object
       required:
