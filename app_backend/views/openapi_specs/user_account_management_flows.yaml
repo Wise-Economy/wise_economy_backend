@@ -4,7 +4,7 @@ info:
   title: Google Connect
   description: API that lets us connect google and manage signup, login and register flows
 servers:
-  - url: https://f1dff3e2-75cd-45d6-a5e8-35718f2d6b75.mock.pstmn.io
+  - url: http://127.0.0.1:8000/
 paths:
   /google_connect:
     post:
