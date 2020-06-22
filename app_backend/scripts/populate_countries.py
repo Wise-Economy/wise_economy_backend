@@ -1,6 +1,6 @@
 from app_backend.helpers.saltedge_client import initiate_saltedge_client
 from app_backend.helpers.saltedge_urls import COUNTRIES_INFO_URL
-from app_backend.models.banking import Country
+from app_backend.models.country import Country
 
 
 def populate_countries():

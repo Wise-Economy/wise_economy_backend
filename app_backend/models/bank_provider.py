@@ -1,6 +1,6 @@
 from django.db import models
 
-from app_backend.models.banking import Country
+from app_backend.models.country import Country
 
 class BankProvider(models.Model):
     id = models.AutoField(primary_key=True)

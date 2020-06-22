@@ -10,3 +10,11 @@ class Country(models.Model):
     country_flag_icon_url = models.CharField(max_length=1024, default=None, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    ENABLED_COUNTRIES = ['Germany', 'United Kingdom']
+
+
+    @staticmethod
+    def get_enabled_countries():
+        return Country.objects.filter(country_name__in=Country.ENABLED_COUNTRIES)
+
