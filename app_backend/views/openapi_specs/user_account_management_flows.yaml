@@ -91,6 +91,7 @@ components:
         - full_name
         - profile_photo
         - email
+        - google_secret_token
       properties:
         google_id:
           type: string
