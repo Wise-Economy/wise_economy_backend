@@ -1,0 +1,182 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Google Connect
+  description: API that lets us connect google and manage signup, login and register flows
+servers:
+  - url: http://127.0.0.1:8000/
+paths:
+  /google_connect:
+    post:
+      description: Connect using Google account
+      operationId: googleConnect
+      requestBody:
+        description: Pass the data obtained from the Google connect to backend. No Authentication.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleConnectBody'
+      responses:
+        '200':
+          description: Google connect backend response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectSuccess'
+        '403':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthFailure'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /register:
+    put:
+      description: Register user details after google connect signup. Authentication will done by using session_token in the request headers.
+      operationId: registerUser
+      requestBody:
+        description: This will contain full name(updated), date_of_birth, phone_number, residence_country
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDetails'
+        response:
+          '200':
+            description: Success response if user details are updated.
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/RegisterSuccess'
+          '403':
+            description: Authentication failed
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/AuthFailure'
+  /get_enabled_countries:
+    get:
+      description: Get all host countries enabled, Authentication will done by using session_token in the request headers.
+      operationId: getEnabledCountries
+      response:
+        '200':
+          description: List of countries with their id and name.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnabledCountriesList'
+  /logout:
+    get:
+      description: Logout the user and delete the session in the database.
+      operationId: logoutUser
+      response:
+        '200':
+          description: Logout successful. The response shouldn't contain any session_token from our server.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogoutSuccess'
+components:
+  schemas:
+    GoogleConnectBody:
+      type: object
+      required:
+        - google_id
+        - full_name
+        - profile_photo
+        - email
+      properties:
+        google_id:
+          type: string
+        full_name:
+          type: string
+        profile_photo:
+          type: string
+        email:
+          type: string
+        google_secret_token:
+          type: string
+    ConnectSuccess:
+      type: object
+      required:
+        - is_new_user
+        - user_details
+      properties:
+        is_new_user:
+          type: boolean
+        user_details:
+          $ref: '#/components/schemas/UserDetails'
+    AuthFailure:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    RegisterSuccess:
+      type: object
+      required:
+        - user_details
+      properties:
+        user_details:
+          $ref: '#/components/schemas/UserDetails'
+    UserDetails:
+      type: object
+      required:
+        - full_name
+      properties:
+        full_name:
+          type: string
+        date_of_birth:
+          description: Should be YYYY-MM-DD format.
+          type: string
+        phone_number:
+          type: string
+        email:
+          type: string
+        residence_country:
+          $ref: '#/components/schemas/Country'
+        profile_photo:
+          type: string
+    EnabledCountriesList:
+      type: object
+      required:
+        - enabled_countries_list
+      properties:
+        enabled_countries_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Country'
+    Country:
+      type: object
+      required:
+        - country_id
+        - country_name
+      properties:
+        country_id:
+          type: integer
+        country_name:
+          type: string
+    LogoutSuccess:
+      type: object
+      required:
+        - success
+      properties:
+        success: boolean
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

@@ -12,7 +12,6 @@ import traceback
 class USER_DEFAULTS:
     DEFAULT_PASSWORD = "WhateverPassword12#"
 
-
 class SIGN_IN_METHODS:
     GOOGLE_SIGN_IN = "google"
     EMAIL_SIGN_IN = "email"
@@ -41,22 +40,20 @@ class AppUser(User):
     phone_number = models.CharField(default=None, blank=True, null=True, max_length=20)
 
     def create_or_return_saltedge_user_record(self):
-        user_record = AppUser.objects.filter(email=self.email)
-        user_data = user_record.first()
-        if user_record.exists() and user_data.se_customer_id is not None:
-            return user_data.se_customer_id
+        if self.se_customer_id is not None:
+            return self.se_customer_id
+        else:
+            payload = json.dumps({'data': {'identifier': self.email}})
+            response = create_saltedge_user(payload)
+            print("response is ", response)
+            se_data = response.json()['data']
+            self.se_customer_id = se_data['id']
+            self.se_identifier = se_data['identifier']
+            self.se_customer_secret = se_data['secret']
+            self.save()
+            return self.se_customer_id
 
-        payload = json.dumps({'data': {'identifier': self.email}})
-        response = create_saltedge_user(payload)
-        print("response is ", response)
-        se_data = response.json()['data']
-        self.se_customer_id = se_data['id']
-        self.se_identifier = se_data['identifier']
-        self.se_customer_secret = se_data['secret']
-        self.save()
-        return self.se_customer_id
-
-    def create_saltedge_user_connection(self):
+    def create_user_connection_record(self):
         if self.se_customer_id is not None:
             user_conn = self.userconnection_set.create(
                 se_customer_id=self.se_customer_id,
@@ -102,3 +99,9 @@ class AppUser(User):
         except Exception:
             print(traceback.format_exc())
             return False
+
+    @staticmethod
+    def get_by_user(user):
+        # This method returns the corresponding AppUser record using django auth user record.
+        return AppUser.objects.get(id=user.id)
+

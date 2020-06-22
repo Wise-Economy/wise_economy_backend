@@ -29,7 +29,7 @@ class AppUserTestCase(TestCase):
                                                               password="password",
                                                               se_customer_id="1234")
 
-        self.userConnection = self.dummyUserWithCustomerId.create_saltedge_user_connection()
+        self.userConnection = self.dummyUserWithCustomerId.create_user_connection_record()
         self.userConnection.se_connection_secret = "vXd8MQdFkCkN6uYGFE8aUkH5ospKjtipQohjzMrQzKo"
         self.userConnection.se_conn_session_status = "ACCOUNTS_FETCHED"
         self.userConnection.se_connection_id = 2131313131
@@ -51,11 +51,11 @@ class AppUserTestCase(TestCase):
         self.assertEqual(self.dummyUserWithOutCustomerId.create_or_return_saltedge_user_record(), "1516")
 
     def test_create_saltedge_user_connection_with_se_record(self):
-        user_conn = self.dummyUserWithCustomerId.create_saltedge_user_connection()
+        user_conn = self.dummyUserWithCustomerId.create_user_connection_record()
         self.assertIsNotNone(user_conn)
 
     def test_create_saltedge_user_connection_without_se_record(self):
-        user_conn = self.dummyUserWithOutCustomerId.create_saltedge_user_connection()
+        user_conn = self.dummyUserWithOutCustomerId.create_user_connection_record()
         print(user_conn)
         self.assertIsNone(user_conn)
 

@@ -5,6 +5,10 @@ from app_backend.models.user_connection import UserConnection
 from app_backend.models.user import User
 
 
+class AccountDefaults:
+    DEFAULT_ACCOUNT_HOLDER_NAME = "NAME-UNDETECTED"
+
+
 class Account(models.Model):
     id = models.AutoField(primary_key=True)
     se_account_id = models.CharField(max_length=100)
