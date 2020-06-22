@@ -4,6 +4,7 @@ from django.http import HttpResponseForbidden, HttpResponseServerError, HttpResp
 from app_backend.models.country import Country
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
+import json
 
 
 @csrf_exempt
@@ -27,8 +28,8 @@ def saltedge_connect(request):
                 })
             else:
                 # Unable to create customer record in Saltedge.
-                return HttpResponseServerError
+                return HttpResponseServerError(content=json.dumps({"message": "FAILED_UPDATE"}))
         else:
-            return HttpResponseForbidden
+            return HttpResponseForbidden(content=json.dumps({"message": "INVALID_SESSION"}))
     except ObjectDoesNotExist:
-        return HttpResponseBadRequest
+        return HttpResponseBadRequest(content=json.dumps({"message": "INVALID_COUNTRY_ID"}))

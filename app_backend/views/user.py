@@ -50,7 +50,7 @@ def register(request):
     user = request.user
     if user.is_authenticated:
         app_user = AppUser.objects.get(id=user.id)
-        if False:
+        if app_user.register_user_details(user_details_payload):
             app_user.create_or_return_saltedge_user_record()
             return JsonResponse({
                 "user_details": app_user.get_user_details(),

@@ -3,6 +3,7 @@ from app_backend.models.user import AppUser
 from django.http import HttpResponseForbidden, HttpResponseServerError
 from app_backend.models.country import Country
 from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 @csrf_exempt
@@ -25,4 +26,4 @@ def get_countries_linkable_for_homescreen(request):
             "countries_linkable": countries_linkable,
         })
     else:
-        return HttpResponseForbidden
+        return HttpResponseForbidden(content=json.dumps({"message": "INVALID_SESSION"}))
