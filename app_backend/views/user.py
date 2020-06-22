@@ -10,6 +10,7 @@ from django.http import HttpResponseForbidden, HttpResponseServerError
 from app_backend.models.country import Country
 
 
+
 @csrf_exempt
 def google_connect(request):
     payload = json.loads(request.body)

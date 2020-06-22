@@ -3,6 +3,7 @@ from app_backend.helpers.saltedge_urls import GET_CONNECTIONS_INFO_URL, ACCOUNT_
 from app_backend.models.user_connection import SaltEdgeAccountFetchStatus, SaltEdgeConnectSessionStatus
 from app_backend.models.bank_provider import BankProvider
 from app_backend.models.user_connection import UserConnection
+from app_backend.models.account import AccountDefaults
 import traceback
 from app_backend.helpers.account_helper import fetch_transactions_for_accounts_linked
 
@@ -64,11 +65,16 @@ def create_or_return_account_for_user_conn(user_connection, saltedge_account_res
         user_connection.account_set.filter(se_bank_account_id=user_bank_account).update(
             se_balance=saltedge_account_response["balance"])
         return user_account
+    se_account_holder_name = AccountDefaults.DEFAULT_ACCOUNT_HOLDER_NAME
+    if "account_name" in saltedge_account_response["extra"]:
+        se_account_holder_name = saltedge_account_response["extra"]["account_name"]
+    elif "client_name" in saltedge_account_response["extra"]:
+        se_account_holder_name = saltedge_account_response["extra"]["client_name"]
     return user_connection.account_set.create(
         se_account_id=saltedge_account_response["id"],
         se_bank_account_id=user_bank_account,
         se_balance=saltedge_account_response["balance"],
         se_currency=saltedge_account_response["currency_code"],
         se_account_nature=saltedge_account_response["nature"],
-        se_account_holder_name=saltedge_account_response["extra"]["account_name"],
+        se_account_holder_name=se_account_holder_name,
     )

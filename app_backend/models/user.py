@@ -12,7 +12,6 @@ import traceback
 class USER_DEFAULTS:
     DEFAULT_PASSWORD = "WhateverPassword12#"
 
-
 class SIGN_IN_METHODS:
     GOOGLE_SIGN_IN = "google"
     EMAIL_SIGN_IN = "email"
