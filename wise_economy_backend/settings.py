@@ -77,7 +77,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'wise_economy',
-        'USER': 'manojt',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres123',
+        'PORT': '5432',
+        'HOST': 'wise-economy.czitzbs55kow.ap-southeast-1.rds.amazonaws.com',
         'TEST': {
             'NAME': 'wise_economy_sandbox',
         },
