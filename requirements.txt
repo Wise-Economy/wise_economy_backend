@@ -2,7 +2,7 @@ appnope
 asgiref
 asn1crypto
 backcall
-certifi.1
+certifi
 cffi
 chardet
 cryptography
@@ -19,7 +19,7 @@ parso
 pexpect
 pickleshare
 prompt-toolkit
-psycopg2
+psycopg2-binary
 ptyprocess
 pycparser
 Pygments
