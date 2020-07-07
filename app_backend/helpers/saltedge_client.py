@@ -104,4 +104,5 @@ def initiate_saltedge_client():
         secret=os.environ.get("SECRET"),
         private_path="/home/ubuntu/wise_economy_backend/private.pem",
     )
+    print("Client initiated..")
     return saltedge_client
