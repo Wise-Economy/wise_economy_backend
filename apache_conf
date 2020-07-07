@@ -1,0 +1,14 @@
+<VirtualHost *:80>
+ServerAdmin webmaster@example.com
+DocumentRoot /home/ubuntu/wise_economy_backend
+ErrorLog ${APACHE_LOG_DIR}/error.log
+CustomLog ${APACHE_LOG_DIR}/access.log combined
+<Directory /home/ubuntu/wise_economy_backend/wise_economy_backend>
+<Files wsgi.py>
+Require all granted
+</Files>
+</Directory>
+WSGIDaemonProcess wise_economy_backend python-path=/home/ubuntu/wise_economy_backend python-home=/home/ubuntu/wise_economy_backend/venv
+WSGIProcessGroup wise_economy_backend
+WSGIScriptAlias / /home/ubuntu/wise_economy_backend/wise_economy_backend/wsgi.py
+</VirtualHost>
