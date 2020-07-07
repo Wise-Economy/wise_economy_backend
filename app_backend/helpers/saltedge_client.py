@@ -102,6 +102,6 @@ def initiate_saltedge_client():
     saltedge_client = SaltEdge(
         app_id=os.environ.get("APP_ID"),
         secret=os.environ.get("SECRET"),
-        private_path=os.environ.get("PRIVATE_SE_PEM_FILE_PATH"),
+        private_path="/home/ubuntu/wise_economy_backend/private.pem",
     )
     return saltedge_client
