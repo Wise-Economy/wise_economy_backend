@@ -45,7 +45,7 @@ class AppUser(User):
         else:
             payload = json.dumps({'data': {'identifier': self.email}})
             response = create_saltedge_user(payload)
-            print("response is ", response)
+            print("response is ", response.json())
             se_data = response.json()['data']
             self.se_customer_id = se_data['id']
             self.se_identifier = se_data['identifier']
