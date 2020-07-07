@@ -7,7 +7,7 @@ cffi
 chardet
 cryptography
 decorator
-defusedxmlrc
+defusedxml
 Django
 idna
 ipdb
