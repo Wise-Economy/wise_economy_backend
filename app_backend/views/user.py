@@ -48,15 +48,18 @@ def google_connect(request):
 def register(request):
     user_details_payload = json.loads(request.body)
     user = request.user
-    if user.is_authenticated:
+    if user is not None:
         app_user = AppUser.objects.get(id=user.id)
-        if app_user.register_user_details(user_details_payload):
-            app_user.create_or_return_saltedge_user_record()
-            return JsonResponse({
-                "user_details": app_user.get_user_details(),
-            })
-        else:
-            return HttpResponseServerError(content=json.dumps({"message": "FAILED_UPDATE"}))
+        login(request, is_new_user=False, app_user=app_user)
+        if user.is_authenticated:
+            app_user = AppUser.objects.get(id=user.id)
+            if app_user.register_user_details(user_details_payload):
+                app_user.create_or_return_saltedge_user_record()
+                return JsonResponse({
+                    "user_details": app_user.get_user_details(),
+                })
+            else:
+                return HttpResponseServerError(content=json.dumps({"message": "FAILED_UPDATE"}))
     return HttpResponseForbidden(content=json.dumps({"message": "INVALID_SESSION"}))
 
 
