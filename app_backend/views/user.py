@@ -49,8 +49,10 @@ def register(request):
     user_details_payload = json.loads(request.body)
     user = request.user
     if user is not None:
-        app_user = AppUser.objects.get(id=user.id)
-        login(request, is_new_user=False, app_user=app_user)
+        auth.authenticate(
+            username=user.email,
+            password=USER_DEFAULTS.DEFAULT_PASSWORD,
+        )
         if user.is_authenticated:
             app_user = AppUser.objects.get(id=user.id)
             if app_user.register_user_details(user_details_payload):
