@@ -79,4 +79,5 @@ def create_or_return_account_for_user_conn(user_connection, saltedge_account_res
         se_currency=saltedge_account_response["currency_code"],
         se_account_nature=saltedge_account_response["nature"],
         se_account_holder_name=se_account_holder_name,
+        app_user_id=user_connection.app_user.id,
     )
