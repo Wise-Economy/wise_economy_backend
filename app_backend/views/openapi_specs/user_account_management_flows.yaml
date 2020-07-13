@@ -158,10 +158,13 @@ components:
       required:
         - country_id
         - country_name
+        - isd_code
       properties:
         country_id:
           type: integer
         country_name:
+          type: string
+        isd_code:
           type: string
     LogoutSuccess:
       type: object

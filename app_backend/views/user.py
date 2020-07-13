@@ -50,6 +50,7 @@ def register(request):
     user = request.user
     if user is not None:
         auth.authenticate(
+            request=request,
             username=user.email,
             password=USER_DEFAULTS.DEFAULT_PASSWORD,
         )

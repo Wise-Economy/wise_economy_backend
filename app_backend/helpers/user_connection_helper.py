@@ -15,8 +15,10 @@ def update_saltedge_connection_success(se_connection_id, user_connection_id):
     user_connection_obj.save()
     if update_if_account_fetch_success(user_connection_obj):
         fetch_accounts_from_saltedge(user_connection_obj)
+        return True
     else:
         print("Account update skipping as the accounts are not fetched into Saltedge.")
+        return False
 
 
 def update_if_account_fetch_success(user_connection):

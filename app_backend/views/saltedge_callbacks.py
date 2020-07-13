@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 import json
 from app_backend.models.user_connection import UserConnection
+from app_backend.helpers.user_connection_helper import update_saltedge_connection_success
 
 
 def connection_success(request):
@@ -10,8 +11,8 @@ def connection_success(request):
     # and send this id along with user_connection_id(our internal id for connections)
     # to this endpoint.
     body = json.loads(request.body)
-    UserConnection.update_saltedge_connection_success(
+    if update_saltedge_connection_success(
         se_connection_id=body['se_connection_id'],
         user_connection_id=body['user_connection_id']
-    )
-    return JsonResponse({"success": True})
+    ):
+        return JsonResponse({"success": True})

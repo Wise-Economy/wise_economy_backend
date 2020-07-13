@@ -30,6 +30,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RequestFailure'
+  /saltedge/callbacks/connection_success:
+    post:
+      summary: 'Call this endpoint when saltedge connection is success and send (SaltEdge) se_connection_id & user_connection_id.'
+      operationId: saltedgeConnectionSuccess
+      tags:
+        - saltedge
+      requestBody:
+        description: Payload to post if Saltedge connection succeeds
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaltedgeConnSuccessRequest'
+      responses:
+        '200':
+          description: Google connect backend response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaltedgeConnSuccessResponse'
+        '403':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthFailure'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /saltedge/connect:
     get:
       summary: 'Start a connect session with Saltedge. Authentication will done by using session_token in the request headers.'
@@ -96,6 +128,16 @@ components:
         country_id:
           type: integer
         country_name:
+          type: string
+    SaltedgeConnSuccessRequest:
+      type: object
+      required:
+        - user_connection_id
+        - se_connection_id
+      properties:
+        user_connection_id:
+          type: integer
+        se_connection_id:
           type: string
     Error:
       type: object
