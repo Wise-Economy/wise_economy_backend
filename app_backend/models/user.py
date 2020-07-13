@@ -111,7 +111,7 @@ class AppUser(User):
             )
             india = Country.objects.get(se_country_code='IN')
             # NOTE: Enabling this for only Indian expats.
-            # Might feel cute later, open it up for more expats.
+            # Might feel cute later, open it up for expats of different origins.
             self.country_of_origin = india
             self.profile_photo = user_details['profile_photo']
             self.save()
