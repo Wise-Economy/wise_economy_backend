@@ -11,7 +11,7 @@ def get_countries_linkable_for_homescreen(request):
     user = request.user
     if user.is_authenticated:
         app_user = AppUser.get_by_user(user)
-        india = Country.objects.get(se_country_code='IN')
+
         countries_linkable = [
             {
                 "country_id": app_user.resident_country.id,
@@ -19,8 +19,8 @@ def get_countries_linkable_for_homescreen(request):
                 "has_accounts_linked": False,
             },
             {
-                "country_id": india.id,
-                "country_name": india.country_name,
+                "country_id": app_user.country_of_origin.id,
+                "country_name": app_user.country_of_origin.country_name,
                 "has_accounts_linked": False,
             },
         ]
