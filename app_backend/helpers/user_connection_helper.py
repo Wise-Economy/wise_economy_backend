@@ -4,6 +4,7 @@ from app_backend.models.user_connection import SaltEdgeAccountFetchStatus, SaltE
 from app_backend.models.bank_provider import BankProvider
 from app_backend.models.user_connection import UserConnection
 from app_backend.models.account import AccountDefaults
+from app_backend.models.country import Country
 import traceback
 from app_backend.helpers.account_helper import fetch_transactions_for_accounts_linked
 
@@ -31,9 +32,12 @@ def update_if_account_fetch_success(user_connection):
         last_attempt = connection_data['last_attempt']
         fetch_status = last_attempt['last_stage']['name']
         if fetch_status == SaltEdgeAccountFetchStatus.FINISH.value:
+            country = Country.objects.get(se_country_code=connection_data['country_code'])
             user_connection.bank_provider = BankProvider.create_or_return_bank_provider(
                 connection_data=connection_data,
+                country=country,
             )
+            user_connection.country = country
             user_connection.se_connection_secret = connection_data['secret']
             user_connection.se_conn_session_status = SaltEdgeConnectSessionStatus.ACCOUNT_FETCH_SUCCESS.value
             user_connection.save()
@@ -80,4 +84,5 @@ def create_or_return_account_for_user_conn(user_connection, saltedge_account_res
         se_account_nature=saltedge_account_response["nature"],
         se_account_holder_name=se_account_holder_name,
         app_user_id=user_connection.app_user.id,
+        country_id=user_connection.country.id,
     )
