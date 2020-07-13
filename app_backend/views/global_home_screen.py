@@ -16,10 +16,12 @@ def get_countries_linkable_for_homescreen(request):
             {
                 "country_id": app_user.resident_country.id,
                 "country_name": app_user.resident_country.country_name,
+                "has_accounts_linked": False,
             },
             {
                 "country_id": india.id,
                 "country_name": india.country_name,
+                "has_accounts_linked": False,
             },
         ]
         return JsonResponse({

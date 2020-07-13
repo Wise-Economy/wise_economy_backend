@@ -12,6 +12,7 @@ import traceback
 class USER_DEFAULTS:
     DEFAULT_PASSWORD = "WhateverPassword12#"
 
+
 class SIGN_IN_METHODS:
     GOOGLE_SIGN_IN = "google"
     EMAIL_SIGN_IN = "email"
@@ -31,13 +32,28 @@ class AppUser(User):
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
     date_of_birth = models.DateField(default=None, blank=True, null=True)
-    resident_country = models.ForeignKey(Country, default=None, blank=True, null=True, on_delete=models.CASCADE)
+    resident_country = models.ForeignKey(
+        Country,
+        default=None,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name='resident_country'
+    )
     se_customer_secret = models.CharField(default=None, blank=True, null=True, max_length=200)
     google_id = models.CharField(default=None, blank=True, null=True, max_length=200)
     profile_photo = models.CharField(default=None, blank=True, null=True, max_length=200)
     full_name = models.CharField(default=None, blank=True, null=True, max_length=200)
     sign_in_method = models.CharField(default=None, blank=True, null=True, max_length=20)
     phone_number = models.CharField(default=None, blank=True, null=True, max_length=20)
+    country_of_origin = models.ForeignKey(
+        Country,
+        default=None,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name='country_of_origin',
+    )
 
     def create_or_return_saltedge_user_record(self):
         if self.se_customer_id is not None:
