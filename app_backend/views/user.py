@@ -78,7 +78,11 @@ def logout_view(request):
 def get_enabled_countries(request):
     enabled_countries = Country.get_enabled_countries()
     response_array = [
-        {"country_id": country.id, "country_name": country.country_name }
+        {
+            "country_id": country.id,
+            "country_name": country.country_name,
+            "isd_code": f'+{country.isd_code}',
+        }
         for country in enabled_countries
     ]
     return JsonResponse({"enabled_countries_list": response_array})
