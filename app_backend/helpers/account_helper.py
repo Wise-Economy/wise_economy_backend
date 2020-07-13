@@ -7,16 +7,26 @@ def fetch_transactions_for_accounts_linked(accounts_in_db):
 
 
 def get_countries_accounts_data(app_user):
-    app_user.account_set
+    user_accounts = app_user.account_set.all()
+    resident_country_data = generate_resident_country_data(app_user=app_user, user_accounts=user_accounts,)
+    origin_country_data = generate_origin_country_data(app_user=app_user, user_accounts=user_accounts,)
     return [
-        {
-            "country_id": app_user.resident_country.id,
-            "country_name": app_user.resident_country.country_name,
-            "has_accounts_linked": False,
-        },
-        {
-            "country_id": app_user.country_of_origin.id,
-            "country_name": app_user.country_of_origin.country_name,
-            "has_accounts_linked": False,
-        },
+        resident_country_data,
+        origin_country_data,
     ]
+
+
+def generate_resident_country_data(app_user, user_accounts):
+    return {
+        "country_id": app_user.resident_country.id,
+        "country_name": app_user.resident_country.country_name,
+        "has_accounts_linked": False,
+    }
+
+
+def generate_origin_country_data(app_user, user_accounts):
+    return {
+        "country_id": app_user.country_of_origin.id,
+        "country_name": app_user.country_of_origin.country_name,
+        "has_accounts_linked": False,
+    }

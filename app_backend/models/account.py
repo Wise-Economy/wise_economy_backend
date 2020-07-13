@@ -3,6 +3,7 @@ from django.db import models
 from app_backend.models.bank_customer_info import BankCustomerInfo
 from app_backend.models.user_connection import UserConnection
 from app_backend.models.user import AppUser
+from app_backend.models.country import Country
 
 
 class AccountDefaults:
@@ -25,6 +26,7 @@ class Account(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     app_user = models.ForeignKey(AppUser, on_delete=models.CASCADE, blank=True, null=True)
     user_connection = models.ForeignKey(UserConnection, on_delete=models.CASCADE, blank=True, null=True)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
         unique_together = ("app_user", "se_bank_account_id")

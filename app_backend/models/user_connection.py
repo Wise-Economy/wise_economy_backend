@@ -8,6 +8,7 @@ from app_backend.helpers.saltedge_urls import CREATE_SALTEDGE_USER_CONNECTION_UR
 from app_backend.models.bank_customer_info import BankCustomerInfo
 from app_backend.models.bank_provider import BankProvider
 from app_backend.models.user import AppUser
+from app_backend.models.country import Country
 
 MAX_RETRIEVAL_DAYS_SALTEDGE = 355
 
@@ -50,7 +51,7 @@ class UserConnection(models.Model):
     se_last_success_at = models.DateTimeField(default=None, blank=True, null=True)
     se_connection_secret = models.CharField(max_length=200, default=None, blank=True, null=True)
     se_categorization = models.CharField(max_length=200, default=None, blank=True, null=True)
-    country_code = models.CharField(max_length=10, default=None, blank=True, null=True)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, blank=True, null=True)
     se_conn_session_status = models.CharField(
         max_length=20,
         default=SaltEdgeConnectSessionStatus.DEFAULT.value,
