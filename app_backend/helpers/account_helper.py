@@ -18,21 +18,21 @@ def get_countries_accounts_data(app_user):
 
 
 def generate_country_level_data(app_user, user_accounts):
-    has_accounts_linked = False
-    accounts_linking_in_progress = False
-
-    if _check_for_in_progress_linking(app_user):
-        accounts_linking_in_progress = True
-
-    if len(user_accounts) > 0:
-        has_accounts_linked = True
-    return {
+    response = {
         "country_id": app_user.resident_country.id,
         "country_name": app_user.resident_country.country_name,
-        "has_accounts_linked": has_accounts_linked,
-        "accounts_linking_in_progress": accounts_linking_in_progress,
-        "accounts_summary": {},
+        "has_accounts_linked": False,
+        "accounts_linking_in_progress": False,
     }
+
+    if _check_for_in_progress_linking(app_user):
+        response["accounts_linking_in_progress"] = True
+
+    if len(user_accounts) > 0:
+        response["has_accounts_linked"] = True
+        response["accounts_summary"] = _summarise_accounts(user_accounts)
+
+    return response
 
 
 def _check_for_in_progress_linking(app_user, country_id):
@@ -41,3 +41,6 @@ def _check_for_in_progress_linking(app_user, country_id):
                .filter(se_conn_session_status=SaltEdgeConnectSessionStatus.CALLBACK_SUCCESS)\
                .count() > 0
 
+
+def _summarise_accounts(user_accounts):
+    return ""

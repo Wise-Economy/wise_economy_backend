@@ -42,7 +42,7 @@ class UserConnection(models.Model):
         null=True,
     )
     se_customer_id = models.CharField(max_length=200, default=None, blank=True, null=True)
-    se_connection_id = models.CharField(max_length=200, default=None, blank=True, unique=True, null=True)
+    se_connection_id = models.CharField(max_length=200, default=None, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(default=None, blank=True, null=True)
