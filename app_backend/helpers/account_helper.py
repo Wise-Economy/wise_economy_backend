@@ -9,23 +9,31 @@ def fetch_transactions_for_accounts_linked(accounts_in_db):
 def get_countries_accounts_data(app_user):
     resident_country_accounts = app_user.account_set.filter(country_id=app_user.resident_country_id)
     origin_country_accounts = app_user.account_set.filter(country_id=app_user.country_of_origin_id)
-    resident_country_data = generate_country_level_data(app_user=app_user, user_accounts=resident_country_accounts,)
-    origin_country_data = generate_country_level_data(app_user=app_user, user_accounts=origin_country_accounts,)
+    resident_country_data = generate_country_level_data(
+        app_user=app_user,
+        user_accounts=resident_country_accounts,
+        country=app_user.resident_country,
+    )
+    origin_country_data = generate_country_level_data(
+        app_user=app_user,
+        user_accounts=origin_country_accounts,
+        country=app_user.country_of_origin,
+    )
     return [
         resident_country_data,
         origin_country_data,
     ]
 
 
-def generate_country_level_data(app_user, user_accounts):
+def generate_country_level_data(app_user, user_accounts, country):
     response = {
-        "country_id": app_user.resident_country.id,
-        "country_name": app_user.resident_country.country_name,
+        "country_id": country.id,
+        "country_name": country.country_name,
         "has_accounts_linked": False,
         "accounts_linking_in_progress": False,
     }
 
-    if _check_for_in_progress_linking(app_user):
+    if _check_for_in_progress_linking(app_user=app_user, country_id=country.id):
         response["accounts_linking_in_progress"] = True
 
     if len(user_accounts) > 0:
