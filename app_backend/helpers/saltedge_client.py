@@ -102,7 +102,7 @@ def initiate_saltedge_client():
     saltedge_client = SaltEdge(
         app_id="GgFXeDSUOJg7w83vSMBGpxnb6wET486_bTTAQXWi0r8",
         secret="R6WuH4PT2tI6zduuTR7tP0wvhRCb90VNI8CqX4IMu40",
-        private_path="/home/ubuntu/wise_economy_backend/private.pem",
+        private_path="/Users/manojt/Desktop/WiseEconomyCodeBase/wise_economy_backend/private.pem",
     )
     print("Client initiated..")
     return saltedge_client

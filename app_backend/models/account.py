@@ -10,12 +10,26 @@ class AccountDefaults:
     DEFAULT_ACCOUNT_HOLDER_NAME = "NAME-UNDETECTED"
 
 
+class AccountNature:
+    SAVINGS = "SAVINGS"
+    CREDIT_CARD = "CREDIT_CARD"
+
+
+class SavingsAccountType:
+    DEFAULT_DEPOSIT = "DEPOSIT"
+    RECURRING_DEPOSIT = "RECURRING_DEPOSIT"
+    FIXED_DEPOSIT = "FIXED_DEPOSIT"
+    INVESTMENTS = "INVESTMENTS"
+
+
 class Account(models.Model):
     id = models.AutoField(primary_key=True)
     se_account_id = models.CharField(max_length=100)
     se_account_name = models.CharField(max_length=100)
     se_bank_account_id = models.CharField(max_length=100, default='Not Set')
     se_currency = models.CharField(max_length=10)
+    # In case of credit card, se_balance shows
+    # sum of "debit transactions after last statement"
     se_balance = models.FloatField()
     se_account_nature = models.CharField(max_length=100)
     se_account_holder_name = models.CharField(max_length=100)
@@ -29,8 +43,8 @@ class Account(models.Model):
     country = models.ForeignKey(Country, on_delete=models.CASCADE, blank=True, null=True)
     # TODO : Credit Card : Clarify meanings below.
     card_type = models.CharField(max_length=20, blank=True, null=True,)
-    available_credit = models.FloatField(default=0.0)
-    closing_balance = models.FloatField(default=0.0)
+    available_credit = models.FloatField(default=0.0)    # Amount of credit you can avail
+    closing_balance = models.FloatField(default=0.0)     # Total amount used on the credit card.
     card_expiry_date = models.DateField(null=True, blank=True,)
     # TODO : Deposits : Clarify meaning of the below fields and add detailed comments.
     interest_rate = models.FloatField(default=0.0)
