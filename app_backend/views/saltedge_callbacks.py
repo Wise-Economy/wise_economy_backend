@@ -23,7 +23,7 @@ def connection_success(request):
             body = json.loads(request.body)
             if update_saltedge_connection_success(
                 se_connection_id=body['se_connection_id'],
-                user_connection_id=body['user_connection_id'],
+                user_connection_id=int(body['user_connection_id']),
             ):
                 return JsonResponse({"success": True})
         else:
