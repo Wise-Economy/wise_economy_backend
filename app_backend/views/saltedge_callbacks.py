@@ -23,11 +23,11 @@ def connection_success(request):
         )
         if user.is_authenticated:
             body = json.loads(request.body)
-            if update_saltedge_connection_success(
+            fetch_sucess = update_saltedge_connection_success(
                 se_connection_id=body['se_connection_id'],
                 user_connection_id=int(body['user_connection_id']),
-            ):
-                return JsonResponse({"success": True})
+            )
+            return JsonResponse({"success": fetch_sucess})
         else:
             return HttpResponseForbidden(content=json.dumps({"message": "INVALID_SESSION"}))
 
