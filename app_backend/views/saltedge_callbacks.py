@@ -4,8 +4,10 @@ from app_backend.helpers.user_connection_helper import update_saltedge_connectio
 from django.contrib import auth
 from app_backend.models.user import USER_DEFAULTS
 from django.http import HttpResponseForbidden
+from django.views.decorators.csrf import csrf_exempt
 
 
+@csrf_exempt
 def connection_success(request):
     # this will be called by frontend app after successful saltedge connect session url_redirect to
     # <domain_url>/connection_success?connection_id=salt_edge_connection_id in the app.
