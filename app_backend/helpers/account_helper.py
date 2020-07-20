@@ -27,15 +27,16 @@ def get_countries_accounts_data(app_user):
 
 
 def generate_country_level_data(app_user, user_accounts, country):
-    response = {
-        "country_id": country.id,
-        "country_name": country.country_name,
-        "has_accounts_linked": False,
-        "accounts_linking_in_progress": False,
-    }
+    response = {}
+    response["country_id"] = country.id
+    response["country_name"] = country.country_name
+    response["has_accounts_linked"] = False
+    response["accounts_linking_in_progress"] = False
 
-    if _check_for_in_progress_linking(app_user=app_user, country_id=country.id):
-        response["accounts_linking_in_progress"] = True
+    response["accounts_linking_in_progress"] = _check_for_in_progress_linking(
+        app_user=app_user,
+        country_id=country.id,
+    )
 
     if len(user_accounts) > 0:
         response["has_accounts_linked"] = True
@@ -52,4 +53,13 @@ def _check_for_in_progress_linking(app_user, country_id):
 
 
 def _summarise_accounts(user_accounts):
-    return ""
+    total_balance = 0
+    currency = ''
+    for account in user_accounts:
+        total_balance += account.se_balance
+        currency = account.se_currency
+
+    return {
+        "total_balance": total_balance,
+        "currency": currency,
+    }
