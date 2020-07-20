@@ -26,6 +26,11 @@ urlpatterns = [
         name='saltedge_conn_success',
     ),
     path(
+        'saltedge/callbacks/fetch_accounts',
+        saltedge_callbacks.fetch_accounts_from_saltedge,
+        name='fetch_accounts_from_saltedge',
+    ),
+    path(
         'global_home_screen/countries_linkable/show',
         global_home_screen.get_countries_linkable_for_homescreen,
         name='global_home_screen_get_countries_linkable_for_homescreen',

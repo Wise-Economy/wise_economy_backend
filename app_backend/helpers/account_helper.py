@@ -54,12 +54,10 @@ def _check_for_in_progress_linking(app_user, country_id):
 
 def _summarise_accounts(user_accounts):
     total_balance = 0
-    currency = ''
     for account in user_accounts:
         total_balance += account.se_balance
-        currency = account.se_currency
 
     return {
         "total_balance": total_balance,
-        "currency": currency,
+        "currency_symbol": account.country.currency_symbol,
     }

@@ -24,10 +24,23 @@ def connection_success(request):
         if user.is_authenticated:
             body = json.loads(request.body)
             fetch_sucess = update_saltedge_connection_success(
-                se_connection_id=body['se_connection_id'],
-                user_connection_id=int(body['user_connection_id']),
+                se_connection_id=body["se_connection_id"],
+                user_connection_id=int(body["user_connection_id"]),
             )
             return JsonResponse({"success": fetch_sucess})
         else:
             return HttpResponseForbidden(content=json.dumps({"message": "INVALID_SESSION"}))
+
+
+@csrf_exempt
+def fetch_accounts_from_saltedge(request):
+    # This will be called by the lambda function that will be triggered.
+    # Will be called with "se_connection_id" & "user_connection_id".
+    body = json.loads(request.body)
+    print("Saltedge connection id : " + str(body["se_connection_id"]))
+    print("User connection id : " + str(body["user_connection_id"]))
+
+    return JsonResponse({"success": True})
+
+
 
