@@ -27,7 +27,7 @@ def create_saltedge_user(payload):
 
 class AppUser(User):
     se_customer_id = models.CharField(max_length=200, blank=True, null=True)
-    se_identifier = models.CharField(default=None, blank=True, null=True, max_length=100)
+    se_identifier = models.CharField(default=None, blank=True, null=True, unique=True, max_length=100)
     se_customer_type = models.CharField(default=None, blank=True, null=True, max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
